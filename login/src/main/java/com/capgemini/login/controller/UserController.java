@@ -27,4 +27,11 @@ public class UserController {
     public ResponseEntity<String> loginUserByUserName(@RequestBody UserPojo user) {
         return new ResponseEntity<>(userService.findUserByUserName(user), HttpStatus.OK);
     }
+
+    @PostMapping(path = "login-by-email")
+    public ResponseEntity<String> loginUserByEmail(@RequestBody UserPojo user) {
+        return new ResponseEntity<>(userService.findUserByEmail(user), HttpStatus.OK);
+    }
+
+
 }

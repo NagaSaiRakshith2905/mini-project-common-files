@@ -43,4 +43,15 @@ public class UserService {
         }
         return "Logged in successfully";
     }
+
+    public String findUserByEmail(UserPojo user) {
+        Optional<User> userDetails = userRepository.findUserByEmail(user.getEmail());
+        if(userDetails.isEmpty()){
+            throw new UserNotFoundException("Wrong credentials\n Invalid email or password");
+        }
+        else if(!user.getPassword().equals(userDetails.get().getPassword())){
+            throw new UserNotFoundException("Wrong credentials\n Invalid email or password");
+        }
+        return "Logged in successfully";
+    }
 }
