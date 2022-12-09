@@ -1,4 +1,4 @@
-package com.capgemini.login.modal;
+package com.capgemini.login.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
