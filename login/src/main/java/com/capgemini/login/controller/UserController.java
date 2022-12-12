@@ -1,14 +1,11 @@
 package com.capgemini.login.controller;
 
 import com.capgemini.login.pojo.UserPojo;
-import com.capgemini.login.service.UserService;
+import com.capgemini.login.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -16,22 +13,16 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RequestMapping(path = "/api/user/")
 public class UserController {
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
 
-    @PostMapping(path = "register")
-    public ResponseEntity<String> registerUser(@RequestBody @Valid UserPojo user){
-        return new ResponseEntity<>(userService.addUser(user), HttpStatus.CREATED);
+    @PostMapping(path = "register/")
+    public ResponseEntity<String> registerUser(@RequestBody UserPojo user){
+        return new ResponseEntity<>(userServiceImpl.registerUser(user), HttpStatus.CREATED);
     }
 
-    @PostMapping(path = "login-by-username")
-    public ResponseEntity<String> loginUserByUserName(@RequestBody UserPojo user) {
-        return new ResponseEntity<>(userService.findUserByUserName(user), HttpStatus.OK);
+    @GetMapping(path = "login/")
+    public ResponseEntity<String> loginUser(@RequestParam(value = "value")String value,@RequestParam(value = "password")String password) {
+        return new ResponseEntity<>(userServiceImpl.loginUser(value,password), HttpStatus.OK);
     }
-
-    @PostMapping(path = "login-by-email")
-    public ResponseEntity<String> loginUserByEmail(@RequestBody UserPojo user) {
-        return new ResponseEntity<>(userService.findUserByEmail(user), HttpStatus.OK);
-    }
-
 
 }
