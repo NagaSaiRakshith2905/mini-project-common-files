@@ -1,7 +1,7 @@
 package com.capgemini.login.controller;
 
 import com.capgemini.login.pojo.UserPojo;
-import com.capgemini.login.service.UserService;
+import com.capgemini.login.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,16 +13,16 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RequestMapping(path = "/api/user/")
 public class UserController {
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
 
-    @PostMapping(path = "register")
-    public ResponseEntity<String> registerUser(@RequestBody @Valid UserPojo user){
-        return new ResponseEntity<>(userService.registerUser(user), HttpStatus.CREATED);
+    @PostMapping(path = "register/")
+    public ResponseEntity<String> registerUser(@RequestBody UserPojo user){
+        return new ResponseEntity<>(userServiceImpl.registerUser(user), HttpStatus.CREATED);
     }
 
-    @GetMapping(path = "login")
-    public ResponseEntity<String> loginUser(@RequestBody UserPojo user) {
-        return new ResponseEntity<>(userService.loginUser(user), HttpStatus.OK);
+    @GetMapping(path = "login/")
+    public ResponseEntity<String> loginUser(@RequestParam(value = "value")String value,@RequestParam(value = "password")String password) {
+        return new ResponseEntity<>(userServiceImpl.loginUser(value,password), HttpStatus.OK);
     }
 
 }
