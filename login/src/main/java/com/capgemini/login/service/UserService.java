@@ -17,7 +17,7 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
-    public String addUser(UserPojo user) {
+    public String registerUser(UserPojo user) {
         Optional<User> userNameExists = userRepository.findUserByUserName(user.getUserName());
         if(!userNameExists.isEmpty()){
            throw new UserAlreadyExistsException("Username already exists");
@@ -33,24 +33,26 @@ public class UserService {
         return "User registration done successfully";
     }
 
-    public String findUserByUserName(UserPojo user) {
-        Optional<User> userDetails = userRepository.findUserByUserName(user.getUserName());
-        if(userDetails.isEmpty()){
-            throw new UserNotFoundException("Wrong credentials\n Invalid username or password");
+    public String loginUser(UserPojo user) {
+        String userName = user.getUserName();
+        String email = user.getEmail();
+        if(email == null){
+            Optional<User> userDetails = userRepository.findUserByUserName(user.getUserName());
+            if(userDetails.isEmpty()) {
+                throw new UserNotFoundException("Wrong credentials\n Invalid username or password");
+            }
+            else if(!user.getPassword().equals(userDetails.get().getPassword())){
+                throw new UserNotFoundException("Wrong credentials\n Invalid username or password");
+            }
         }
-        else if(!user.getPassword().equals(userDetails.get().getPassword())){
-            throw new UserNotFoundException("Wrong credentials\n Invalid username or password");
-        }
-        return "Logged in successfully";
-    }
-
-    public String findUserByEmail(UserPojo user) {
-        Optional<User> userDetails = userRepository.findUserByEmail(user.getEmail());
-        if(userDetails.isEmpty()){
-            throw new UserNotFoundException("Wrong credentials\n Invalid email or password");
-        }
-        else if(!user.getPassword().equals(userDetails.get().getPassword())){
-            throw new UserNotFoundException("Wrong credentials\n Invalid email or password");
+        else if(userName == null){
+            Optional<User> userDetails = userRepository.findUserByEmail(user.getEmail());
+            if(userDetails.isEmpty()) {
+                throw new UserNotFoundException("Wrong credentials\n Invalid email or password");
+            }
+            else if(!user.getPassword().equals(userDetails.get().getPassword())){
+                throw new UserNotFoundException("Wrong credentials\n Invalid email or password");
+            }
         }
         return "Logged in successfully";
     }

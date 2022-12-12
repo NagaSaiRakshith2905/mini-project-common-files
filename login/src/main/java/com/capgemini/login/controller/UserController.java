@@ -5,10 +5,7 @@ import com.capgemini.login.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -20,18 +17,12 @@ public class UserController {
 
     @PostMapping(path = "register")
     public ResponseEntity<String> registerUser(@RequestBody @Valid UserPojo user){
-        return new ResponseEntity<>(userService.addUser(user), HttpStatus.CREATED);
+        return new ResponseEntity<>(userService.registerUser(user), HttpStatus.CREATED);
     }
 
-    @PostMapping(path = "login-by-username")
-    public ResponseEntity<String> loginUserByUserName(@RequestBody UserPojo user) {
-        return new ResponseEntity<>(userService.findUserByUserName(user), HttpStatus.OK);
+    @GetMapping(path = "login")
+    public ResponseEntity<String> loginUser(@RequestBody UserPojo user) {
+        return new ResponseEntity<>(userService.loginUser(user), HttpStatus.OK);
     }
-
-    @PostMapping(path = "login-by-email")
-    public ResponseEntity<String> loginUserByEmail(@RequestBody UserPojo user) {
-        return new ResponseEntity<>(userService.findUserByEmail(user), HttpStatus.OK);
-    }
-
 
 }
