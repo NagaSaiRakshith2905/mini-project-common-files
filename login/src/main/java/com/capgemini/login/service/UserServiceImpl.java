@@ -9,6 +9,8 @@ import com.capgemini.login.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.Optional;
 
@@ -18,7 +20,7 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
-
+    
     public String registerUser(UserRequest user) {
         Optional<User> userNameExists = userRepository.findUserByUserName(user.getUserName());
         if (userNameExists.isPresent())
@@ -70,4 +72,17 @@ public class UserServiceImpl implements UserService {
                 .email(user.get().getEmail())
                 .build();
     }
+
+    @Transactional
+    public String updatePassword(String email, String password) {
+        Optional<User> userByEmail = userRepository.findUserByEmail(email);
+        if (userByEmail.isEmpty())  {
+            throw  new UserNotFoundException("Email doesn't exist");
+        }
+        if (!(password == "") && !password.equals(userByEmail.get().getPassword())){
+            userByEmail.get().setPassword(password);
+        }
+        return "password Updated successFully";
+    }
+
 }

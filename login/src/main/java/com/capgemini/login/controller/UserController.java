@@ -33,4 +33,10 @@ public class UserController {
     public ResponseEntity<UserResponse> getUserById(@RequestParam(value = "id")int id){
         return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
     }
+
+    @PutMapping(path = "reset-password/")
+    public ResponseEntity<String> updatePassword (@RequestParam(value = "email")String email,@RequestParam(value = "password")String password) {
+        return new ResponseEntity<>(userService.updatePassword(email,password), HttpStatus.OK);
+    }
+
 }

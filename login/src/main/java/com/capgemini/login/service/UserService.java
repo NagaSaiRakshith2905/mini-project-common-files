@@ -1,5 +1,6 @@
 package com.capgemini.login.service;
 
+
 import com.capgemini.login.pojo.UserRequest;
 import com.capgemini.login.pojo.UserResponse;
 
@@ -11,4 +12,6 @@ public interface UserService {
     UserResponse getUserByUserName(String username);
 
     UserResponse getUserById(int id);
+
+    String updatePassword(String email, String password);
 }
