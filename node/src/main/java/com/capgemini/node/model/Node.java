@@ -1,4 +1,4 @@
-package com.capgemini.node.modal;
+package com.capgemini.node.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,7 +20,7 @@ public class Node {
     @Id
     @SequenceGenerator(name = "node_sequence",sequenceName = "node_sequence")
     @GeneratedValue(strategy = SEQUENCE,generator = "node_sequence")
-    private Integer id;
+    private Integer node_id;
     private String name;
     private String ip;
     private String password;
