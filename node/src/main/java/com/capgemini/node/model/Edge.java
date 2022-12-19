@@ -1,4 +1,4 @@
-package com.capgemini.node.modal;
+package com.capgemini.node.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -19,8 +19,8 @@ public class Edge {
     @Id
     @SequenceGenerator(name = "edge_sequence",sequenceName = "edge_sequence")
     @GeneratedValue(strategy = SEQUENCE,generator = "edge_sequence")
-    private Integer id;
-    private Character edgeName;
+    private Integer edge_id;
+    private Character name;
     private Boolean isAvailable;
 
     @JsonIgnore
