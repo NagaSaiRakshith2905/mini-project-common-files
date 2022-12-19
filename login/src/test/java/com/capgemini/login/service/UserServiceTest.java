@@ -110,4 +110,23 @@ public class UserServiceTest {
 
     }
 
+    @Test
+    void updatePasswordTest(){
+        when(userRepository.findUserByUserName(username1)).thenReturn(Optional.of(user1));
+        String usernameResponse1 = userService.updatePassword(username1, password1);
+        assertThat(usernameResponse1).isEqualTo("password Updated successFully");
+
+        when(userRepository.findUserByUserName(username2)).thenReturn(Optional.empty());
+        when(userRepository.findUserByEmail(email2)).thenReturn(Optional.of(user2));
+        String usernameResponse2 = userService.updatePassword(email2, password2);
+        assertThat(usernameResponse2).isEqualTo("password Updated successFully");
+
+        when(userRepository.findUserByUserName(username2)).thenReturn(Optional.empty());
+        when(userRepository.findUserByEmail(email2)).thenReturn(Optional.of(user2));
+        assertThrows(UserNotFoundException.class,()->userService.updatePassword(username2, password1));
+
+        when(userRepository.findUserByUserName(username2)).thenReturn(Optional.empty());
+        when(userRepository.findUserByEmail(email2)).thenReturn(Optional.empty());
+        assertThrows(UserNotFoundException.class,()->userService.updatePassword(username2, password1));
+    }
 }

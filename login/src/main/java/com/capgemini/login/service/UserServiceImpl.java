@@ -9,6 +9,8 @@ import com.capgemini.login.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.Optional;
 
@@ -39,11 +41,13 @@ public class UserServiceImpl implements UserService {
             Optional<User> userDetailsByEmail = userRepository.findUserByEmail(value);
             if (userDetailsByEmail.isEmpty()) {
                 throw new UserNotFoundException("Invalid email or username");
-            } else if (!password.equals(userDetailsByEmail.get().getPassword())) {
+            }
+            else if (!password.equals(userDetailsByEmail.get().getPassword())) {
                 throw new UserNotFoundException("Wrong password");
             }
             return userDetailsByEmail.get().getUserName();
-        } else if (!password.equals(userDetailsByUsername.get().getPassword())) {
+        }
+        else if (!password.equals(userDetailsByUsername.get().getPassword())) {
             throw new UserNotFoundException("Wrong password");
         }
         return userDetailsByUsername.get().getUserName();
@@ -69,5 +73,24 @@ public class UserServiceImpl implements UserService {
                 .userName(user.get().getUserName())
                 .email(user.get().getEmail())
                 .build();
+    }
+
+    @Transactional
+    public String updatePassword(String value, String password) {
+        Optional<User> userDetailsByUsername = userRepository.findUserByUserName(value);
+        if (userDetailsByUsername.isEmpty()) {
+            Optional<User> userDetailsByEmail = userRepository.findUserByEmail(value);
+            if (userDetailsByEmail.isEmpty()) {
+                throw new UserNotFoundException("Invalid email or username");
+            }
+            else if (!(password == "") && !password.equals(userDetailsByEmail.get().getPassword())) {
+                userDetailsByEmail.get().setPassword(password);
+            }
+            return "password Updated successFully";
+        }
+        else if (!(password == "") && !password.equals(userDetailsByUsername.get().getPassword())) {
+            userDetailsByUsername.get().setPassword(password);
+        }
+        return "password Updated successFully";
     }
 }
